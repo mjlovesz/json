@@ -44,6 +44,7 @@ void CJsonElem::swap(CJsonElem & elem)
 
 void CJsonElem::copy(const CJsonElem& elem)
 {
+	clear();
 	m_type = elem.m_type;
 	m_data = elem.m_data;
 
@@ -80,14 +81,15 @@ void CJsonElem::clear()
 	if (is(json_OBJECT))
 	{
 		m_data.m_object.clear();
-		return ;
 	}
 	else if (is(json_ARRAY))
 	{
 		m_data.m_array.clear();
-		return ;
 	}
-	throw json_err_badcast();
+	else if (is(json_STRING))
+	{
+		m_data.m_string.clear();
+	}
 }
 
 int CJsonElem::size() 
@@ -129,17 +131,7 @@ const CJsonElem& CJsonElem::operator [](const char* strKey) const
 {
 	static CJsonElem s_null;	
 	sure(json_OBJECT);
-/*
-	json_Obj::iterator it = m_data.m_object->find(strKey);
-	if (it != m_data.m_object->end())
-	{
-		return it->second;
-	}
-	else
-	{
-		return s_null;
-	}
-/*/
+
 	for (const_iterator_obj it = m_data.m_object.begin(); it != m_data.m_object.end(); ++it)
 	{
 		if (it->m_sKey == strKey)
@@ -148,7 +140,7 @@ const CJsonElem& CJsonElem::operator [](const char* strKey) const
 		}
 	}
 	return s_null;
-//*/
+
 };
 
 CJsonElem& CJsonElem::operator [](const char* strkey)

@@ -60,7 +60,7 @@ public://构造函数,析构函数,拷贝函数
 	CJsonElem(bool bdata)		{m_type = json_BOOL;	m_data.m_bool = bdata;};
 	CJsonElem(const char* pcstrdata){m_type = json_STRING;	m_data.m_string.init(pcstrdata);};
 
-	CJsonElem(const CJsonElem& elem):m_type(elem.m_type)			{copy(elem);};//COPY语义
+	CJsonElem(const CJsonElem& elem) {m_type =json_NULL; copy(elem);};//COPY语义
 
 	~CJsonElem();
 
